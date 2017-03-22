@@ -7,9 +7,7 @@ import experiments.ExperimentBlock;
 import main.Main;
 import strategies.blocks.BlocksAllObservationFilterAbducibles;
 import strategies.blocks.BlocksAllObservations;
-import strategies.blocks.BlocksSamePredicateObservation;
 import strategies.blocks.BlocksSingleObservation;
-import strategies.blocks.BlocksSingleObservationWithAbnormalFalse;
 import strategies.blocks.StrategyExperimentBlocks;
 import syllogisms.Syllogism;
 import syllogisms.SyllogismEnum;
@@ -21,12 +19,8 @@ public class StrategiesExperimentBlocks {
 	private static StrategyExperimentBlocks getStrategy() {
 		if(currentStrategy == null) {
 			switch(Main.cp.getStrategiesBlocks()) {
-			case "BlocksSingleObservationWithAbnormalFalse":
-				currentStrategy = new BlocksSingleObservationWithAbnormalFalse(); break;
 			case "BlocksSingleObservation":
 				currentStrategy = new BlocksSingleObservation(); break;
-			case "BlocksSamePredicateObservation":
-				currentStrategy = new BlocksSamePredicateObservation(); break;
 			case "BlocksAllObservationFilterAbducibles":
 				currentStrategy = new BlocksAllObservationFilterAbducibles(); break;
 			case "BlocksAllObservations":
