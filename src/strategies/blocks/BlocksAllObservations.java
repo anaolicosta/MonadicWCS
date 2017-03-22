@@ -7,9 +7,9 @@ import java.util.Set;
 
 import abduction.Observations;
 import common.Atom;
-import Program.Clause;
-import Program.Program;
 import experiments.ExperimentBlock;
+import program.Clause;
+import program.Program;
 import strategies.StrategiesAbducibles;
 import syllogisms.Syllogism;
 

@@ -10,11 +10,11 @@ import java.util.Set;
 import common.Atom;
 import common.Interpretation;
 import common.ModelAndEntailment;
-import Program.Clause;
-import Program.ClauseType;
-import Program.Program;
 import entailment.Conclusions;
 import experiments.ExperimentBlock;
+import program.Clause;
+import program.ClauseType;
+import program.Program;
 
 /**
  * A Syllogism is <b>uniquely</b> identified by its name that must be 

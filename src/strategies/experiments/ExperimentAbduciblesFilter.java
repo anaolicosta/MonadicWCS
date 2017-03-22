@@ -5,12 +5,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import Program.Clause;
-import Program.ClauseType;
 import abduction.Abducibles;
 import abduction.Observations;
 import experiments.Experiment;
 import experiments.ExperimentBlock;
+import program.Clause;
+import program.ClauseType;
 
 public class ExperimentAbduciblesFilter implements StrategyExperiments {
 

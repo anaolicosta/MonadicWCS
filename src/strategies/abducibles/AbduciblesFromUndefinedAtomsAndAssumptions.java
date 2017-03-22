@@ -5,9 +5,9 @@ import java.util.Set;
 
 import abduction.Abducibles;
 import common.Atom;
-import Program.Clause;
-import Program.ClauseType;
-import Program.Program;
+import program.Clause;
+import program.ClauseType;
+import program.Program;
 
 public class AbduciblesFromUndefinedAtomsAndAssumptions implements StrategyAbducibles {
 	@Override

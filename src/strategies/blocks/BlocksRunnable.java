@@ -18,12 +18,12 @@ import abduction.Observations;
 import common.Atom;
 import common.Interpretation;
 import common.ModelAndEntailment;
-import Program.Clause;
-import Program.Program;
 import experiments.Experiment;
 import experiments.ExperimentBlock;
 import main.FileWatcher;
 import main.Main;
+import program.Clause;
+import program.Program;
 import strategies.StrategiesExperiment;
 import syllogisms.SyllogismEnum;
 

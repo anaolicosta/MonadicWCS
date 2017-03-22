@@ -1,7 +1,7 @@
 package strategies.abducibles;
 
 import abduction.Abducibles;
-import Program.Program;
+import program.Program;
 import strategies.Strategy;
 
 public interface StrategyAbducibles extends Strategy {

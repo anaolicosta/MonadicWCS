@@ -3,9 +3,9 @@ package abduction;
 import java.util.HashSet;
 import java.util.Set;
 
-import Program.Clause;
-import Program.ClauseType;
 import common.Atom;
+import program.Clause;
+import program.ClauseType;
 
 /**
  * Set of Abducibles. An abducible is a {@link Clause}. 

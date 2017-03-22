@@ -9,9 +9,9 @@ import abduction.Abducibles;
 import abduction.Observations;
 import common.Atom;
 import common.Predicate;
-import Program.Clause;
-import Program.Program;
 import experiments.ExperimentBlock;
+import program.Clause;
+import program.Program;
 import strategies.StrategiesAbducibles;
 import syllogisms.Syllogism;
 

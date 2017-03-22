@@ -1,8 +1,8 @@
 package strategies;
 
 import abduction.Abducibles;
-import Program.Program;
 import main.Main;
+import program.Program;
 import strategies.abducibles.AbduciblesFromUndefinedAtomsAndAssumptions;
 import strategies.abducibles.StrategyAbducibles;
 
