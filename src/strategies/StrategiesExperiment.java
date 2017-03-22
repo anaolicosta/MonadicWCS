@@ -7,7 +7,6 @@ import experiments.ExperimentBlock;
 import main.Main;
 import strategies.experiments.ExperimentAbducibleSubset;
 import strategies.experiments.ExperimentAbduciblesFilter;
-import strategies.experiments.ExperimentAbduciblesSubsetWithAbdnormalities;
 import strategies.experiments.StrategyExperiments;
 
 public class StrategiesExperiment {
@@ -17,8 +16,6 @@ public class StrategiesExperiment {
 	private static StrategyExperiments getStrategy() {
 		if(currentStrategy == null) {
 			switch(Main.cp.getStrategiesExperiments()) {
-			case "ExperimentAbduciblesSubsetWithAbdnormalities":
-				currentStrategy = new ExperimentAbduciblesSubsetWithAbdnormalities(); break;
 			case "ExperimentAbduciblesFilter":
 				currentStrategy = new ExperimentAbduciblesFilter(); break;
 			case "ExperimentAbducibleSubset":
