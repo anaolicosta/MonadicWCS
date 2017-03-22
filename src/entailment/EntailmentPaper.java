@@ -10,7 +10,7 @@ import common.Predicate;
 
 public class EntailmentPaper implements Entails {
 
-	public Conclusions entails(Interpretation interpretation, Mood weakerMood) {
+	public Conclusions entails(Interpretation interpretation) {
 		
 		Set<Conclusion> conclusions = new HashSet<Conclusion>();
 		

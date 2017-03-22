@@ -11,14 +11,6 @@ import main.Main;
 
 public class Program {
 
-
-
-	private static final String REGEX_BEGIN_BODY = "\\[";
-	private static final String REGEX_END_CLAUSE = "\\]\\)\\).";
-	private static final String REGEX_IMPLICATION = ":-";
-	private static final String REGEX_START_CLAUSE = "\\(\\(";
-	
-
 	private List<Clause> clauses;
 	
 	/**

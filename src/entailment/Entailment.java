@@ -2,7 +2,6 @@ package entailment;
 
 
 import common.Interpretation;
-import common.Mood;
 import main.Main;
 
 public class Entailment {
@@ -14,12 +13,6 @@ public class Entailment {
 			switch(Main.cp.getEntailment()) {
 			case "EntailmentPaper":
 				currentEntailment = new EntailmentPaper(); break;
-			case "EntailmentTotalUniversal":
-				currentEntailment = new EntailmentTotalUniversal(); break;
-			case "EntailmentUniversalComplement":
-				currentEntailment = new EntailmentUniversalComplement(); break;
-			case "EntailmentPriority":
-				currentEntailment = new EntailmentPriority(); break;
 			default:
 				currentEntailment = new EntailmentPaper(); break;
 			}
@@ -30,7 +23,7 @@ public class Entailment {
 
 	private Entailment() {}
 	
-	public static Conclusions entails(Interpretation interpretation, Mood weakerMood) {
-		return getEntailment().entails(interpretation, weakerMood);
+	public static Conclusions entails(Interpretation interpretation) {
+		return getEntailment().entails(interpretation);
 	}
 }

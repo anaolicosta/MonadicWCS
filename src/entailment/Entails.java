@@ -5,7 +5,7 @@ import common.Mood;
 import common.Predicate;
 
 public interface Entails {
-	Conclusions entails(Interpretation interpretation, Mood weakerMood);
+	Conclusions entails(Interpretation interpretation);
 
 	boolean isAll(final Interpretation model, final Predicate firstPredicate, final Predicate secondPredicate);
 

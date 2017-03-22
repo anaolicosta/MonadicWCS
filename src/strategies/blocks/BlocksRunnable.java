@@ -177,8 +177,7 @@ public abstract class BlocksRunnable implements StrategyExperimentBlocks {
 				try {
 					experiment
 							.setModelAndEntailment(
-									new ModelAndEntailment(new Interpretation(pathInterpretationFile), 
-											syllogismKey.weakerMood));
+									new ModelAndEntailment(new Interpretation(pathInterpretationFile)));
 
 					if (experiment.areObservationsEntailed()) {
 						successfullExperiments.add(experiment);

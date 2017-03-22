@@ -22,15 +22,13 @@ public class ModelAndEntailment {
 	
 	private Interpretation interpretation;
 	private Conclusions conclusions;
-	private Mood weakerMood;
 	
 	/**
 	 * Create an instance with empty Interpretation and Conclusions.
 	 */
-	public ModelAndEntailment(final Mood weakerMood) {
+	public ModelAndEntailment() {
 		this.interpretation = new Interpretation();
 		this.conclusions = new Conclusions();
-		this.weakerMood = weakerMood;
 	}
 	
 	/**
@@ -39,8 +37,7 @@ public class ModelAndEntailment {
 	 * Conclusions will be derived with respect to the given interpretation.
 	 * @param interpretation
 	 */
-	public ModelAndEntailment(final Interpretation interpretation, final Mood weakerMood) {
-		this.weakerMood = weakerMood;
+	public ModelAndEntailment(final Interpretation interpretation) {
 		setInterpretation(interpretation);
 	}
 	
@@ -58,7 +55,7 @@ public class ModelAndEntailment {
 	 */
 	private void setInterpretation(Interpretation interpretation) {
 		this.interpretation = interpretation;
-		this.conclusions = Entailment.entails(interpretation, weakerMood);
+		this.conclusions = Entailment.entails(interpretation);
 	}
 
 	public Conclusions getConclusions() {

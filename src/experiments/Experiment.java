@@ -18,7 +18,7 @@ public class Experiment {
 	public Experiment(final Abducibles abducibles, final Observations observations) {
 		this.abducibles = abducibles;
 		
-		this.modelAndEntailment = new ModelAndEntailment(Mood.O);
+		this.modelAndEntailment = new ModelAndEntailment();
 		this.areObservationsEntailed = false;
 		
 		this.observationToCheck = observations;

@@ -118,7 +118,7 @@ public class Syllogism  {
 	private Syllogism(final SyllogismEnum syllogismName) {
 		this.syllogismName = syllogismName;
 		this.originalProgram = new Program();
-		this.originalModelAndEntailment = new ModelAndEntailment(syllogismName.weakerMood);
+		this.originalModelAndEntailment = new ModelAndEntailment();
 		this.experimentBlocks = new ArrayList<ExperimentBlock>();
 		this.isToTestAbduction = false;
 		this.precisionOriginalProgram = 0.0;
@@ -137,7 +137,7 @@ public class Syllogism  {
 	}
 	
 	public void setModelAndEntailment(Interpretation interpretation) {
-		this.originalModelAndEntailment = new ModelAndEntailment(interpretation, syllogismName.weakerMood);
+		this.originalModelAndEntailment = new ModelAndEntailment(interpretation);
 		this.precisionOriginalProgram = evaluatePrecision() / 9;
 		this.isToTestAbduction = this.originalModelAndEntailment.getConclusions().hasNVC();
 	}
