@@ -38,7 +38,14 @@ public class Clause {
 	}
 	
 	public Clause(final Atom atom, final ClauseType type) {
-		new Clause(atom, type, "");
+		this.head = atom;
+		this.type = type;
+		switch(type) {
+			case FACT: this.body = TRUE; break;
+			case ASSUMPTION: this.body = FALSE; break;
+			case RULE: this.body = "" ;break;
+			default: this.body = ""; break;
+		}
 	}
 
 	
