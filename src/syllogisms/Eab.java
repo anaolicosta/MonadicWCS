@@ -29,15 +29,15 @@ public class Eab {
 		
 		String comment = "% No " + A + " is " + B + ".";
 		
-		String cl1 = "clause(" + "n" + A  + "(X)" + " :- [" + B + "(X)" + "," + "n(ab" + B + "n" +  A + "(X))]" + ")" + ".";
+		String cl1 = "clause(" + "n" + B  + "(X)" + " :- [" + A + "(X)" + "," + "n(ab" + A + "n" +  B + "(X))]" + ")" + ".";
 		
-		String cl2 = "clause(ab" + B + "n" +  A + "(X) :- [f]).";
+		String cl2 = "clause(ab" + A + "n" +  B + "(X) :- [f]).";
 		
-		String cl3 = "clause(" + A + "(X)" + " :- [" + "n(" + "n" + A + "(X))" + "," + "n(abn" + A + A + "(X))]).";
+		String cl3 = "clause(" + B + "(X)" + " :- [" + "n(" + "n" + B + "(X))" + "," + "n(abn" + B + B + "(X))]).";
 		
-		String cl4 = "clause(" + B + "(" + objectOne + ")" + " :- " + "[t]" + ").";
+		String cl4 = "clause(" + A + "(" + objectOne + ")" + " :- " + "[t]" + ").";
 
-		String cl5 = "clause(abn" + A + A + "(" + objectOne + ") :- [f]).";
+		String cl5 = "clause(abn" + B + B + "(" + objectOne + ") :- [f]).";
 		
 
 		return comment + "\n" + cl1 + "\n" +  cl2 + "\n" + cl3 + "\n" + cl4 + "\n" + cl5;// + "\n" +cl42;
