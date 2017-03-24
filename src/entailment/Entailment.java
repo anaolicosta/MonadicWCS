@@ -13,6 +13,8 @@ public class Entailment {
 			switch(Main.cp.getEntailment()) {
 			case "EntailmentPaper":
 				currentEntailment = new EntailmentPaper(); break;
+			case "EntailmentProlog":
+				currentEntailment = new EntailmentProlog(); break;
 			default:
 				currentEntailment = new EntailmentPaper(); break;
 			}

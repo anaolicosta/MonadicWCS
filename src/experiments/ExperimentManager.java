@@ -19,7 +19,6 @@ import common.Predicate;
 import entailment.Conclusion;
 import entailment.Conclusions;
 import main.Main;
-import main.TestPrologEntailment;
 import output.PrintResultDescription;
 import output.PrintResults;
 import output.PrintableResults;
@@ -55,130 +54,20 @@ public class ExperimentManager {
 		printable.printInitialData();
 		
 		//Start!
-//		startExperiments();
-//		
-//		
+		startExperiments();
+		
+		
 //		//Collect and print results
-//		collectOverallResults();
-//		
-//		printOverallResults();
-//		
-//		printCsv(pattern);
+		collectOverallResults();
 		
-		test();
+		printOverallResults();
+		
+		printCsv(pattern);
+
 	}
 
-	
-	//TODO: In progress
-	private void test(){
 
-		for (SyllogismEnum syllogismKey : SyllogismEnum.values()) {
-			Syllogism syllogism = Syllogism.getSyllogism(syllogismKey);
-			
-			String fileBaseName = EXPERIMENTS_BASE_DIR + syllogismKey.toString() + "/";
-			//FileWatcher watcher = new FileWatcher(Paths.get(fileBaseName));
 
-			String syllPath = fileBaseName;
-			File theDir = new File(syllPath);
-	
-			if (!theDir.exists()) {
-			    try{
-			        theDir.mkdir();	
-					//System.out.println("[Created folder for syllogism experiments] " + syllPath);
-			    } catch(SecurityException se){
-			        System.out.println("Failed to create dir: " + theDir.toString());
-			    }          
-			}
-			
-			//Delete old files
-			File[] listFiles = theDir.listFiles();
-			for(File dirExpBlocks: listFiles) {
-				dirExpBlocks.delete();	
-			}	
-		
-		
-			try {
-				PrintWriter writer = new PrintWriter(fileBaseName + "entailment.pl", "UTF-8");
-				String firstProgram = TestPrologEntailment
-						.getProgramWithModel(syllogism.getmodelAndEntailment().getInterpretation());
-				writer.println(firstProgram);
-
-				//writer.println(TestPrologEntailment.addWeaker(firstProgram, syllogismKey.weakerMood));
-				writer.close();
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			
-			String experimentPath = fileBaseName + "entailment";
-			Path pathInterpretationFile = Paths.get(experimentPath + "glm.pl");
-
-			
-			ProcessBuilder pb = new ProcessBuilder(
-					"/home/madame/Documents/Logic/EMCL/Project/Syllogisms/git/MonadicReasoning/resources/run.sh",
-					syllogismKey.toString() + "/" + "entailment");
-			try {
-				pb.start();
-				Thread.sleep(300);
-				//watcher.watch(pathInterpretationFile);
-			} catch (IOException | InterruptedException e) {
-				System.out.println(
-						"Failed to wacth file in path " + pathInterpretationFile + "\nMessage: " + e.getMessage());
-			}
-
-			//watcher.close();
-			
-			try {
-				
-				System.out.println("[" + syllogismKey + "]");
-				
-				Interpretation i = new Interpretation(pathInterpretationFile);
-				Conclusions conc = new Conclusions();
-				
-				System.out.print(" Entailed: ");
-				for(Atom a: i.getAtomsTrue()) {
-					Predicate predicate = a.getPredicate();
-					if(Predicate.getPredicateEntailment().contains(predicate)) {
-						System.out.print(a + " ");
-						conc.addConclusion(Conclusion.getConclusionFromEntailmentPredicate(predicate));
-					}
-				}
-				
-				System.out.print("\n False: ");
-
-				boolean iDontknow = true;
-				for(Atom a: i.getAtomsFalse()) {
-					Predicate predicate = a.getPredicate();
-					if(Predicate.getPredicateEntailment().contains(predicate)) {
-						System.out.print(a + " ");
-						iDontknow = false;
-					}
-				}
-				
-				if (conc.isEmpty()) conc.addConclusion(Conclusion.NVC);
-				
-				
-				if (iDontknow) System.out.println("! I don't know ! ");
-				
-				System.out.println("\n Does it entail the same conclusions? "
-						+ syllogism.getmodelAndEntailment().getConclusions().equals(conc));
-				
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-				
-				
-			
-		}
-	}
-	
-	
 	private void printCsv(final String pattern) {
 		Main.printCsv.print(pattern);
 		Main.printCsv.print(Main.cp.getMinimalityCriteria());

@@ -163,8 +163,7 @@ public abstract class BlocksRunnable implements StrategyExperimentBlocks {
 			if (experiment.getAbducibles().areTheSameAsObservations(expBlock.getObservations())) {
 				System.out.println("Trivial abducibles: #" + i + ". Not tested.");
 			} else {
-				ProcessBuilder pb = new ProcessBuilder(
-						"/home/madame/Documents/Logic/EMCL/Syllogisms/git/AbductionSyll/resources/run.sh",
+				ProcessBuilder pb = new ProcessBuilder("resources/run.sh",
 						syllogismKey.toString() + "/" + fileName);
 				try {
 					pb.start();
