@@ -10,7 +10,7 @@ import java.util.ArrayList;
  */
 public class PrologConnector{
 	
-	public void runProlog(ArrayList<String> patterns) throws Exception{
+	public void runProlog(String pattern) throws Exception{
 			  
 	    String[] syll = {
 	    		"aa1", "aa2", "aa3", "aa4", 
@@ -35,21 +35,19 @@ public class PrologConnector{
 	    }; 
 	    
 	    File file;
-	    
-	    for(int i = 0; i < patterns.size(); i++){
-		    	
-	    	for(int j =0; j < syll.length; j++){
-	    		
+	      	
+    	for(int j =0; j < syll.length; j++){
+    		
 
-				file = new File(Main.PATH + "/g_syll/" + patterns.get(i) + "/");
-				file.mkdirs();
-				file = new File(Main.PATH + "/lm_syll/" + patterns.get(i) + "/");
-				file.mkdirs();
-				
-				ProcessBuilder pb = new ProcessBuilder(Main.PATH + "run.sh", patterns.get(i) + "/" + syll[j]);
-	    		pb.start();
-	    	}
-	    }
+//			file = new File(Main.PATH + "/g_syll/" + pattern + "/");
+//			file.mkdirs();
+//			file = new File(Main.PATH + "/lm_syll/" + pattern + "/");
+//			file.mkdirs();
+			
+			ProcessBuilder pb = new ProcessBuilder("resources/run.sh", pattern + "/" + syll[j]);
+    		pb.start();
+    	}
+	    
 	 }
 	
 }

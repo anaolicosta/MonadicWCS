@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
-import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -13,18 +12,18 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import common.Atom;
 import common.Interpretation;
-import common.Predicate;
 import entailment.Conclusion;
 import entailment.Conclusions;
 import main.Main;
+import main.PrologConnector;
 import output.PrintResultDescription;
 import output.PrintResults;
 import output.PrintableResults;
 import output.SyllogismPrintable;
 import strategies.StrategiesExperiment;
 import strategies.StrategiesExperimentBlocks;
+import syllogisms.SyllinProlog;
 import syllogisms.Syllogism;
 import syllogisms.SyllogismEnum;
 
@@ -35,15 +34,14 @@ public class ExperimentManager {
 	
 	private PrintResults printResults;
 	
-	public ExperimentManager(final Path folderLeastModels, final Path folderPrograms, final String pattern)
+	public ExperimentManager(final String pattern)
 			throws IOException {
 		
 		//Clean all the previous results and start a new set of experiments.
 		Syllogism.clear();
 		
-		initSyllogisms(folderLeastModels, folderPrograms);
+		initSyllogisms(pattern);
 		
-
 		//To print results
 		printResults = new PrintResultDescription(EXPERIMENTS_BASE_DIR + "/description_" + pattern + ".txt");
 		
@@ -55,7 +53,6 @@ public class ExperimentManager {
 		
 		//Start!
 		startExperiments();
-		
 		
 //		//Collect and print results
 		collectOverallResults();
@@ -90,21 +87,35 @@ public class ExperimentManager {
 	 * @param folderPrograms
 	 * @throws IOException
 	 */
-	private void initSyllogisms(final Path folderLeastModels, final Path folderPrograms) throws IOException {
-		DirectoryStream<Path> dirLeastModels = Files.newDirectoryStream(folderLeastModels);
-		DirectoryStream<Path> dirPrograms = Files.newDirectoryStream(folderPrograms);
+	private void initSyllogisms(final String pattern) throws IOException {
 
-		//Read least models.
-		for (Path pathFileModel : dirLeastModels) {
-			Syllogism syll = Syllogism.getSyllogism(getSyllogismKey(pathFileModel));
-			syll.setModelAndEntailment(new Interpretation(pathFileModel));
+		int patternA = Integer.valueOf(pattern.substring(0, 1));
+		int patternI = Integer.valueOf(pattern.substring(1, 2));
+		int patternE = Integer.valueOf(pattern.substring(2, 3));
+		int patternO = Integer.valueOf(pattern.substring(3, 4));
+
+		//Create original programs.
+		SyllinProlog syllinProlog = new SyllinProlog();
+		syllinProlog.createAllSyll(patternA, patternI , patternE, patternO);
+
+		PrologConnector prologConnector = new PrologConnector();
+		
+		try { 
+			prologConnector.runProlog(pattern); 
+			}catch (Exception e) {e.printStackTrace();
+		}
+
+		
+		//Read ground programs and least models.
+		for (Path pathFile : Files.newDirectoryStream(Paths.get(Main.PATH + pattern))) {
+			Syllogism syll = Syllogism.getSyllogism(getSyllogismKey(pathFile));
+			if(pathFile.toString().endsWith("g.pl")) {
+				syll.setProgram(Files.readAllLines(pathFile));	
+			} else if (pathFile.toString().endsWith("glm.pl")){
+				syll.setModelAndEntailment(new Interpretation(pathFile));
+			}
 		}
 		
-		//Read ground programs.
-		for (Path pathProgram : dirPrograms) {
-			Syllogism syll = Syllogism.getSyllogism(getSyllogismKey(pathProgram));
-			syll.setProgram(Files.readAllLines(pathProgram));		
-		}
 		
 		double precision = 0.0;
 		for (SyllogismEnum syllogismKey : SyllogismEnum.values()) {

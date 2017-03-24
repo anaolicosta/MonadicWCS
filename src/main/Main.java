@@ -46,8 +46,7 @@ public class Main {
 						
 			for(int i=0; i < patterns.length; i++) {
 				System.out.println("[Info]\tPattern = " + patterns[i]);
-				new ExperimentManager(Paths.get(PATH + "/lm_syll/" + patterns[i]),
-						Paths.get(PATH + "/g_syll/" + patterns[i]), patterns[i]);
+				new ExperimentManager(patterns[i]);
 			}
 				
 		} catch (IOException e) {
