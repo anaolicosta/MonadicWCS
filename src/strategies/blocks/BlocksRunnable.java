@@ -167,6 +167,7 @@ public abstract class BlocksRunnable implements StrategyExperimentBlocks {
 						 syllogismKey.toString() + "/" + fileName);
 				try {
 					pb.start();
+					//Watcher react on modify.
 					watcher.watch(pathInterpretationFile);
 				} catch (IOException e) {
 					System.out.println(
@@ -174,6 +175,7 @@ public abstract class BlocksRunnable implements StrategyExperimentBlocks {
 				}
 
 				try {
+					
 					experiment
 							.setModelAndEntailment(
 									new ModelAndEntailment(new Interpretation(pathInterpretationFile)));

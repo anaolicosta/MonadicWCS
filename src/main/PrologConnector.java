@@ -34,18 +34,11 @@ public class PrologConnector{
 	    		"oo1", "oo2", "oo3", "oo4",
 	    }; 
 	    
-	    File file;
 	      	
     	for(int j =0; j < syll.length; j++){
-    		
-
-//			file = new File(Main.PATH + "/g_syll/" + pattern + "/");
-//			file.mkdirs();
-//			file = new File(Main.PATH + "/lm_syll/" + pattern + "/");
-//			file.mkdirs();
-			
 			ProcessBuilder pb = new ProcessBuilder("resources/run.sh", pattern + "/" + syll[j]);
-    		pb.start();
+			Process process = pb.start();
+			process.waitFor();
     	}
 	    
 	 }

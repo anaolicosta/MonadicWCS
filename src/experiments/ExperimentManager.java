@@ -95,13 +95,14 @@ public class ExperimentManager {
 
 		//Create original programs.
 		SyllinProlog syllinProlog = new SyllinProlog();
-		syllinProlog.createAllSyll(patternA, patternI , patternE, patternO);
+		syllinProlog.createAllSyll(patternA, patternI, patternE, patternO);
 
 		PrologConnector prologConnector = new PrologConnector();
 		
 		try { 
 			prologConnector.runProlog(pattern); 
-			}catch (Exception e) {e.printStackTrace();
+		}catch (Exception e) {
+			e.printStackTrace();
 		}
 
 		
