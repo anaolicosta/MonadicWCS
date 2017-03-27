@@ -183,7 +183,9 @@ public class Abducibles {
 	//This is used to add the abducibles to the program.
 	public String toString() {
 		StringBuilder toString = new StringBuilder();
-		setAbducibles.forEach(a -> toString.append("\n" + a.toString().replaceAll("clause_g\\(\\(", "clause\\(").replaceAll("\\]\\)\\).", "\\]\\).")));
+		for(Clause c: setAbducibles) {
+			toString.append(c.printClause() + "\n");
+		}
 		return toString.toString();
 	}
 	

@@ -164,7 +164,7 @@ public abstract class BlocksRunnable implements StrategyExperimentBlocks {
 				System.out.println("Trivial abducibles: #" + i + ". Not tested.");
 			} else {
 				ProcessBuilder pb = new ProcessBuilder("resources/run.sh",
-						syllogismKey.toString() + "/" + fileName);
+						 syllogismKey.toString() + "/" + fileName);
 				try {
 					pb.start();
 					watcher.watch(pathInterpretationFile);

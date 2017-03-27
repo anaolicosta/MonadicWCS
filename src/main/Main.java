@@ -17,6 +17,7 @@ public class Main {
 	public static PrintResults printCsv;
 	
 	private static String[] patterns;
+	public static String currentPattern;
 
 	public static void main(String[] args) {
 		
@@ -45,6 +46,7 @@ public class Main {
 						
 			for(int i=0; i < patterns.length; i++) {
 				System.out.println("[Info]\tPattern = " + patterns[i]);
+				currentPattern = patterns[i];
 				new ExperimentManager(patterns[i]);
 			}
 				

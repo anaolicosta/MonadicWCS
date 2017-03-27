@@ -86,7 +86,7 @@ public class Atom {
 	
 	@Override
 	public String toString() {
-		return predicate + "(o" + objectRef + ")";
+		return predicate.toString().toLowerCase() + "(o" + objectRef + ")";
 	}
 
 

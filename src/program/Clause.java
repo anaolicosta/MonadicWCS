@@ -9,7 +9,7 @@ public class Clause {
 	
 	
 	/* Constants to build ground clauses.  */
-	private static final String BEGIN_CLAUSE = "clause\\(";
+	private static final String BEGIN_CLAUSE = "clause(";
 	private static final String BEGIN_CLAUSE_G = "clause_g((";
 	private static final String END_CLAUSE = ").";
 	private static final String END_CLAUSE_G = ")).";

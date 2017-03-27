@@ -110,7 +110,7 @@ public class EntailmentProlog implements Entails {
 		String entailPath = fileBaseName;
 		File theDir = new File(entailPath);
 		
-		FileWatcher watcher = new FileWatcher(Paths.get(entailPath));
+		
 
 
 		if (!theDir.exists()) {
@@ -146,6 +146,8 @@ public class EntailmentProlog implements Entails {
 		String experimentPath = fileBaseName + "entailment";
 		Path pathInterpretationFile = Paths.get(experimentPath + "glm.pl");
 
+		FileWatcher watcher = new FileWatcher(Paths.get(entailPath));
+		
 		ProcessBuilder pb = new ProcessBuilder("resources/run.sh", "entailment/entailment");
 		
 		try {
