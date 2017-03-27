@@ -52,14 +52,12 @@ public class ExperimentManager {
 		printable.printInitialData();
 		
 		//Start!
-		//startExperiments();
+		startExperiments();
 		
-//		//Collect and print results
-		//collectOverallResults();
+		//Collect and print results
+		collectOverallResults();
 		
-		//printOverallResults();
-		closeDescriptionFile();
-
+		printOverallResults();
 		printCsv(pattern);
 
 	}

@@ -40,7 +40,6 @@ public class Main {
 
 		patterns = cp.getPatterns();
 		
-		System.out.println("[Alert]\tPrograms should be already created under " + Main.PATH  + "syllogisms");
 			
 		try {
 						
