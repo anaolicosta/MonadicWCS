@@ -81,9 +81,9 @@ public class Conclusion {
 
 	@Override
 	public String toString() {
-		return isNVC ?  
-				"NVC" : 
-					mood.toString() + firstPredicate.toString() + secondPredicate.toString();
+		return isNVC ? "NVC"
+				: mood.toString() + firstPredicate.toString().toLowerCase() 
+								  + secondPredicate.toString().toLowerCase();
 	}
 	
 	@Override
