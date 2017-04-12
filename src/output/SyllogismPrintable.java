@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import entailment.Conclusion;
 import entailment.Conclusions;
 import experiments.Experiment;
 import experiments.ExperimentBlock;
@@ -87,59 +86,57 @@ public class SyllogismPrintable implements PrintableResults {
 	}
 
 	
-	//SYLLOGISM
-	public void printSummaryUnit(final Syllogism syllogism) {
+	public void printOverallResults(){	
 		
-		switch (printResults.getOutputType()) {
-		case "description": printSummarySyllogismDescription(syllogism); break;
-		case "csv": break;
-		default: break;
-		}
-	}
+		for (SyllogismEnum syllogismKey : SyllogismEnum.values()) {
+			Syllogism syllogism = Syllogism.getSyllogism(syllogismKey);
+			
+			printResults.print("[" + syllogismKey + "] ");
+			
+			printResults.print("Participants:" + syllogismKey.peopleConclusions.toString()  
+					+ " \t WCS [");
+			
+			if(syllogism.isToTestAbduction())
+				printResults.println(String.format("%.2f", syllogism.skepticalAccuracy()) +  "]: "
+						+ syllogism.getSkepticalConclusions().toString() );
+			else printResults.println(String.format("%.2f", syllogism.getPrecisionOriginalProgram()) +  "]: "
+					+ syllogism.getmodelAndEntailment().getConclusions().toString() );
 
-	private void printSummarySyllogismDescription(final Syllogism syllogism) {
+					
+			
+		}
 		
-		SyllogismEnum syllogismKey = syllogism.getSyllogismName();
+		String finalPrecision = String.format( "%.6f", Syllogism.credoulousOverallPrecision);
+		this.printResults.print("\n\nCredoulous overall accuracy ");
+		this.printResults.println(finalPrecision);
+		
+		finalPrecision = String.format( "%.6f", Syllogism.SkepticalOverallPrecision);
+		this.printResults.print("Skeptical overall accuracy ");
+		this.printResults.println(finalPrecision);
+		
+	}
+	
+	
+	
+	public void printSummaryStep(final Syllogism syllogism, final SyllogismEnum syllogismKey) {
 		
 		final boolean testedAbduction = syllogism.isToTestAbduction();
 		String precision = String.format("%.2f", syllogism.getPrecisionOriginalProgram());
 		this.printResults.println("\n[" + syllogismKey.toString() + 
 				"] Previous accuracy: " + precision);
 		
-		syllogism.getCredoulousConclusions().clearConclusions();
-		syllogism.getSkepticalConclusions().clearConclusions();
 		
 		if(testedAbduction) {
+			
 			List<ExperimentBlock> expBlocks = syllogism.getExperimentBlocks(); 
 			int sizeExpBlocks = expBlocks.size();
-			
-			boolean isFirstSuccessfullBlock = true;
-			
+						
 			for(int i = 0; i < sizeExpBlocks; i++) {
 				this.printResults.println("-> Experiment block #" + i);
 				ExperimentBlock experimentBlock = expBlocks.get(i);
 				
-				
-				printSummaryBlock(experimentBlock, syllogismKey.peopleConclusions);
-
-				if (experimentBlock.isHasSucessfullExperiments()) {
-					syllogism.getCredoulousConclusions().
-						addConclusions(experimentBlock.getCredoulousConclusions());
-					
-					//Skeptical
-					Conclusions syllSConclusions = syllogism.getSkepticalConclusions();
-					Conclusions blockSConclusions = experimentBlock.getSkepticalConclusions();
-	
-					if(isFirstSuccessfullBlock) {
-						syllogism.setSkepticalConclusions(blockSConclusions);
-						isFirstSuccessfullBlock = false;
-						
-					} else if(!syllSConclusions.containsAllConclusions(blockSConclusions)) {
-							syllSConclusions.clearConclusions();
-					}
-				}
+				printSummaryBlock(experimentBlock);
 			}
-			
 			
 			Conclusions cConclusions = syllogism.getCredoulousConclusions();
 			Conclusions sConclusions = syllogism.getSkepticalConclusions();
@@ -153,56 +150,36 @@ public class SyllogismPrintable implements PrintableResults {
 				this.printResults.println("\tOriginal answers: " + syllogismKey.peopleConclusions.toString());
 				this.printResults.println("\tCredoulous answers: "+ cConclusions.toString());
 				this.printResults.println("\tCredoulous Accuracy: " + 
-						((accuracyCredoulous == 0)? "-" : String.format("%.2f", accuracyCredoulous)));
+						((accuracyCredoulous == 0)? "-" : String.format("%.4f", accuracyCredoulous)));
 				this.printResults.println("\tSkeptical answers: "+ sConclusions.toString());
 				this.printResults.println("\tSkeptical Accuracy: " + 
-						((accuracySkeptical == 0)? "-" : String.format("%.2f", accuracySkeptical)));
+						((accuracySkeptical == 0)? "-" : String.format("%.4f", accuracySkeptical)));
 			}
 		}
 		
 	}
 	
-	public void printSummaryBlock(final ExperimentBlock expBlock, final Conclusions peopleConclusions) {
-		
+	
+	private void  printSummaryBlock(final ExperimentBlock expBlock) {
 		final List<Experiment> experiments = expBlock.getSuccessExperiments();
 		this.printResults.println("- Observations: " + expBlock.getObservations().toString());
 		
-		Set<Conclusion> credoulous = new HashSet<Conclusion>();
-		Set<Conclusion> skeptical = new HashSet<Conclusion>();
-
-		boolean isFirstSuccessfullExperiment = true;
 		for(Experiment e: experiments) {
-			
-			if(e.areObservationsEntailed()) {
-				Conclusions expConclusions = e.getModelAndEntailment().getConclusions();
-				Set<Conclusion> setOfConclusions = expConclusions.getSetOfConclusions();
 
-				//Credoulous
-				credoulous.addAll(setOfConclusions);
-				//Skeptical
-				if(isFirstSuccessfullExperiment) {
-					expBlock.setHasSucessfullExperiments(true);
-					skeptical.addAll(setOfConclusions);
-					isFirstSuccessfullExperiment = false;
-				} else if(!skeptical.containsAll(setOfConclusions)) {
-					skeptical.clear();
-				}
-				
-				double accuracy = peopleConclusions.matchingConclusions(expConclusions) / 9.0;
-				String accuracyFormat = String.format("%.2f", accuracy);
-				
+			if (e.areObservationsEntailed()) {
+
 				this.printResults.println("--> Succesful Experiment");
-				this.printResults.print("-- Abducibles: " + e.getAbducibles().toString()+"\n");
-				//this.mainDescriptionFile.println("-- Model: " + e.getModelAndEntailment().getInterpretation().toString() +"\n");
-				this.printResults.println("-- Conclusions: " 
-						+ expConclusions.toString() + ". Accuracy: " + accuracyFormat );
+				this.printResults.print("-- Abducibles: " + e.getAbducibles().toString() + "\n");
+				// this.mainDescriptionFile.println("-- Model: " +
+				// e.getModelAndEntailment().getInterpretation().toString()
+				// +"\n");
+				this.printResults.println("-- Conclusions: " + e.getModelAndEntailment().getConclusions().toString()
+						+ ". Accuracy: " + String.format("%.4f", e.getAccuracy()));
 			}
 		}
 		
-		expBlock.setCredoulousConclusions(new Conclusions(credoulous));
-		expBlock.setSkepticalConclusions(new Conclusions(skeptical));
-		
 	}
+	
 	
 
 }

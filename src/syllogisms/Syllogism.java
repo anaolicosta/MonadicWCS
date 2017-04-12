@@ -220,7 +220,15 @@ public class Syllogism  {
 	}
 
 	private double evaluatePrecision(){
-		return syllogismName.peopleConclusions.matchingConclusions(this.getmodelAndEntailment().getConclusions());
+		return evaluatePrecision(this.getmodelAndEntailment().getConclusions());
+	}
+	
+	public double evaluatePrecision(Conclusions conclusions){
+		return syllogismName.peopleConclusions.matchingConclusions(conclusions);
+	}
+	
+	public double evaluateAccuracy(Conclusions conclusions){
+		return (conclusions.isEmpty()) ? this.precisionOriginalProgram : evaluatePrecision(conclusions) / 9.0;
 	}
 
 	public double credoulousAccuracy(){

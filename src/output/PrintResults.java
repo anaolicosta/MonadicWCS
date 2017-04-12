@@ -44,11 +44,9 @@ public class PrintResults {
 	}
 	
 	
-	
 	public PrintWriter getDescriptionFileWriter() {
 		return descriptionFileWriter;
 	}
-	
 	
 
 	public String getOutputType() {

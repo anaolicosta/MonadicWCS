@@ -32,7 +32,8 @@ public class ExperimentManager {
 	private static final String EXPERIMENTS_BASE_DIR = "syllogisms/";
 	private static int END_INDEX_SYLL_REF = 3;
 	
-	private PrintResults printResults;
+	private PrintResults printResultsDescriptionFile;
+	private PrintableResults syll_printable;
 	
 	public ExperimentManager(final String pattern)
 			throws IOException {
@@ -42,14 +43,16 @@ public class ExperimentManager {
 		
 		initSyllogisms(pattern);
 		
-		//To print results
-		printResults = new PrintResultDescription(EXPERIMENTS_BASE_DIR + "/description_" + pattern + ".txt");
+		//Open description file.
+		printResultsDescriptionFile = new PrintResultDescription(
+				EXPERIMENTS_BASE_DIR + "description_" + pattern + ".txt");
 		
-		printResults.printInitialDescription();
+		//Print initial data.
+		printResultsDescriptionFile.printInitialDescription();
 		
-		PrintableResults printable = new SyllogismPrintable(printResults);
+		syll_printable = new SyllogismPrintable(printResultsDescriptionFile);
 		
-		printable.printInitialData();
+		syll_printable.printInitialData();
 		
 		//Start!
 		startExperiments();
@@ -57,26 +60,15 @@ public class ExperimentManager {
 		//Collect and print results
 		collectOverallResults();
 		
-		printOverallResults();
-		printCsv(pattern);
-
-	}
-
-
-
-	private void printCsv(final String pattern) {
-		Main.printCsv.print(pattern);
-		Main.printCsv.print(Main.cp.getMinimalityCriteria());
-		Main.printCsv.print(Main.cp.getEntailment());
-		Main.printCsv.print(Main.cp.getObservationsCriteria());
-		Main.printCsv.print(Main.cp.getStrategiesAbducibles());
-		Main.printCsv.print(String.format("%.6f", Syllogism.originalOverallPrecision));
-		Main.printCsv.print(String.format("%.6f", Syllogism.credoulousOverallPrecision));
-		Main.printCsv.print(String.format("%.6f", Syllogism.SkepticalOverallPrecision));
-		Main.printCsv.print(String.format("%.6f", Syllogism.credoulousOverallPrecision - Syllogism.originalOverallPrecision));
-		Main.printCsv.println(String.format("%.6f", Syllogism.SkepticalOverallPrecision - Syllogism.originalOverallPrecision));
+		//Print overall results.
+		syll_printable.printOverallResults();
+	
+		//Close description file.
+		printResultsDescriptionFile.closeDescriptionFile();
 		
 	}
+
+	
 
 	/**
 	 * Read least models and programs inside Path params
@@ -150,7 +142,7 @@ public class ExperimentManager {
 				
 				collectResultsSyllogism(syllogism, syllogismKey.peopleConclusions);
 				
-				printSummarySyllogism(syllogism, syllogismKey);
+				syll_printable.printSummaryStep(syllogism, syllogismKey);
 			}
 				
 		}	
@@ -190,37 +182,7 @@ public class ExperimentManager {
 	
 	}
 	
-	public void printOverallResults(){
-		
-		
-		for (SyllogismEnum syllogismKey : SyllogismEnum.values()) {
-			Syllogism syllogism = Syllogism.getSyllogism(syllogismKey);
-			
-			printResults.print("[" + syllogismKey + "] ");
-			
-			printResults.print("Participants:" + syllogismKey.peopleConclusions.toString()  
-					+ " \t WCS [");
-			
-			if(syllogism.isToTestAbduction())
-				printResults.println(String.format("%.2f", syllogism.skepticalAccuracy()) +  "]: "
-						+ syllogism.getSkepticalConclusions().toString() );
-			else printResults.println(String.format("%.2f", syllogism.getPrecisionOriginalProgram()) +  "]: "
-					+ syllogism.getmodelAndEntailment().getConclusions().toString() );
-
-					
-			
-		}
-		
-		String finalPrecision = String.format( "%.6f", Syllogism.credoulousOverallPrecision);
-		this.printResults.print("\n\nCredoulous overall accuracy ");
-		this.printResults.println(finalPrecision);
-		
-		finalPrecision = String.format( "%.6f", Syllogism.SkepticalOverallPrecision);
-		this.printResults.print("Skeptical overall accuracy ");
-		this.printResults.println(finalPrecision);
-		
-		closeDescriptionFile();
-	}
+	
 
 
 
@@ -271,46 +233,7 @@ public class ExperimentManager {
 		
 	}
 	
-	public void printSummarySyllogism(final Syllogism syllogism, final SyllogismEnum syllogismKey) {
-		
-		final boolean testedAbduction = syllogism.isToTestAbduction();
-		String precision = String.format("%.2f", syllogism.getPrecisionOriginalProgram());
-		this.printResults.println("\n[" + syllogismKey.toString() + 
-				"] Previous accuracy: " + precision);
-		
-		
-		if(testedAbduction) {
-			
-			List<ExperimentBlock> expBlocks = syllogism.getExperimentBlocks(); 
-			int sizeExpBlocks = expBlocks.size();
-						
-			for(int i = 0; i < sizeExpBlocks; i++) {
-				this.printResults.println("-> Experiment block #" + i);
-				ExperimentBlock experimentBlock = expBlocks.get(i);
-				
-				printSummaryBlock(experimentBlock);
-			}
-			
-			Conclusions cConclusions = syllogism.getCredoulousConclusions();
-			Conclusions sConclusions = syllogism.getSkepticalConclusions();
-			
-			if(!(cConclusions.isEmpty() && sConclusions.isEmpty())) {
-
-				double accuracyCredoulous = syllogism.credoulousAccuracy();
-				double accuracySkeptical = syllogism.skepticalAccuracy();
-
-				this.printResults.println("\n\tResults of abduction (observations were entailed): ");
-				this.printResults.println("\tOriginal answers: " + syllogismKey.peopleConclusions.toString());
-				this.printResults.println("\tCredoulous answers: "+ cConclusions.toString());
-				this.printResults.println("\tCredoulous Accuracy: " + 
-						((accuracyCredoulous == 0)? "-" : String.format("%.4f", accuracyCredoulous)));
-				this.printResults.println("\tSkeptical answers: "+ sConclusions.toString());
-				this.printResults.println("\tSkeptical Accuracy: " + 
-						((accuracySkeptical == 0)? "-" : String.format("%.4f", accuracySkeptical)));
-			}
-		}
-		
-	}
+	
 	
 	
 	public void collectResultsBlock(final ExperimentBlock expBlock, final Conclusions peopleConclusions){
@@ -347,29 +270,6 @@ public class ExperimentManager {
 		expBlock.setSkepticalConclusions(new Conclusions(skeptical));
 		
 	}
-	
-	public void  printSummaryBlock(final ExperimentBlock expBlock) {
-		final List<Experiment> experiments = expBlock.getSuccessExperiments();
-		this.printResults.println("- Observations: " + expBlock.getObservations().toString());
-		
-		for(Experiment e: experiments) {
-
-			if (e.areObservationsEntailed()) {
-
-				this.printResults.println("--> Succesful Experiment");
-				this.printResults.print("-- Abducibles: " + e.getAbducibles().toString() + "\n");
-				// this.mainDescriptionFile.println("-- Model: " +
-				// e.getModelAndEntailment().getInterpretation().toString()
-				// +"\n");
-				this.printResults.println("-- Conclusions: " + e.getModelAndEntailment().getConclusions().toString()
-						+ ". Accuracy: " + String.format("%.4f", e.getAccuracy()));
-			}
-		}
-		
-	}
-	
-	public void closeDescriptionFile() { this.printResults.closeDescriptionFile(); }
-	
 	
 	
 	

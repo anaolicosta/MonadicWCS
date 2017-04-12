@@ -120,6 +120,8 @@ public class Program {
 			case "foundedExistentialImport":
 				boolean isExistentialImport = (objRef % 2 == 1);
 				isClauseForObservations = isExistentialImport && !(this.isOnlyClauseWithThisHead(clause)); break;
+			case "supportedFact":
+				isClauseForObservations = !(this.isOnlyClauseWithThisHead(clause)); break;
 			default: isClauseForObservations = false;
 			}
 			
